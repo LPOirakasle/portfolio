@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="eu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Baliabide-fitxategia · Irakasle-portfolioa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #FFFBF2;
+    --paper-alt: #FFEFD9;
+    --ink: #14161f;
+    --ink-soft: #4a4d5c;
+    --line: #E4D9BD;
+    --accent: #D55E00;
+    --accent-ink: #FBE3D2;
+    --teal: #0072B2;
+    --teal-soft: #E1F0FA;
+    --clay: #E69F00;
+    --clay-soft: #FDECC8;
+    --radius: 2px;
+    --serif: "Newsreader", Georgia, serif;
+    --sans: "Work Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  img{ max-width:100%; }
+
+  a{ color: inherit; }
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible{
+    outline: 2px solid var(--teal);
+    outline-offset: 2px;
+  }
+
+  .wrap{
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    border-bottom: 1px solid var(--line);
+    padding: 64px 0 40px;
+  }
+  .hero__inner{
+    display:flex;
+    gap: 48px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+  }
+  .hero__title-block{ flex: 1 1 420px; }
+  .hero__kicker{
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--teal);
+    margin: 0 0 6px;
+  }
+  h1{
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(2.1rem, 4.4vw, 3.4rem);
+    line-height: 1.08;
+    margin: 0 0 18px;
+    letter-spacing: -0.01em;
+  }
+  .hero__lede{
+    font-size: 1.05rem;
+    color: var(--ink-soft);
+    max-width: 54ch;
+    margin: 0;
+  }
+  .hero__stats{
+    display:flex;
+    gap: 32px;
+    flex: 0 0 auto;
+  }
+  .stat{ text-align: left; }
+  .stat__num{
+    font-family: var(--serif);
+    font-size: 2.1rem;
+    font-weight: 600;
+    display:block;
+    line-height: 1;
+    color: var(--accent);
+  }
+  .stat__label{
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- BLOCKS ---------- */
+  .blocks{ padding: 48px 0 8px; }
+  .blocks .section__head{ margin-bottom: 24px; }
+  .blockgrid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 20px;
+    align-items: stretch;
+  }
+  .blockcard{
+    display:flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .blockcard__banner{
+    height: 132px;
+    background: var(--paper-alt);
+  }
+  .blockcard__banner svg{
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .blockcard__body{
+    padding: 18px 18px 20px;
+    display:flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+  .blockcard__body h3{
+    font-family: var(--serif);
+    font-size: 1.12rem;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.3;
+  }
+  .blockcard__body p{
+    margin: 0;
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    flex: 1;
+  }
+  .blockcard__count{
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+  }
+  .blockcard__btn{
+    margin-top: 10px;
+    align-self: flex-start;
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 9px 16px;
+    border: none;
+    background: var(--block-color, var(--teal));
+    color: #fff;
+    cursor: pointer;
+    border-radius: var(--radius);
+    transition: filter .15s ease;
+  }
+  .blockcard__btn:hover{ filter: brightness(0.92); }
+
+  .activefilter{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background: var(--paper-alt);
+    border: 1px solid var(--line);
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    margin-bottom: 18px;
+  }
+  .activefilter button{
+    border:0;
+    background:transparent;
+    cursor:pointer;
+    font-size: 1rem;
+    line-height:1;
+    color: var(--ink-soft);
+  }
+  .activefilter button:hover{ color: var(--ink); }
+
+  /* ---------- FILTER BAR ---------- */
+  .filters{
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+    padding: 18px 0;
+  }
+  .filters__row{
+    display:flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: center;
+  }
+  .filters__group{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap: wrap;
+  }
+  .filters__group-label{
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+  .search{
+    flex: 1 1 220px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    border: 1px solid var(--line);
+    background: #fff;
+    padding: 9px 12px;
+    border-radius: var(--radius);
+  }
+  .search svg{ flex:none; opacity:.5; }
+  .search input{
+    border:0;
+    outline:0;
+    background:transparent;
+    font-family: var(--sans);
+    font-size: 0.95rem;
+    width:100%;
+    color: var(--ink);
+  }
+  .pillgroup{
+    display:flex;
+    gap:8px;
+    flex-wrap: wrap;
+  }
+  .pill{
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    padding: 7px 14px;
+    border: 1px solid var(--line);
+    background: #fff;
+    border-radius: 999px;
+    cursor:pointer;
+    color: var(--ink-soft);
+    transition: background .15s ease, color .15s ease, border-color .15s ease;
+  }
+  .pill:hover{ border-color: var(--teal); }
+  .pill[aria-pressed="true"]{
+    background: var(--ink);
+    color: #fff;
+    border-color: var(--ink);
+  }
+  .typeselect{
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    padding: 9px 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: #fff;
+    color: var(--ink);
+  }
+
+  /* ---------- GRID ---------- */
+  .section{ padding: 44px 0; }
+  .section__head{
+    display:flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+  }
+  h2{
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 1.5rem;
+    margin: 0;
+  }
+  .count{
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 18px;
+  }
+
+  .card{
+    position: relative;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-top: 3px solid var(--card-color, var(--teal));
+    padding: 20px 20px 18px;
+    display:flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 100%;
+  }
+  .card__top{
+    display:flex;
+    justify-content: flex-start;
+    align-items:flex-start;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .tag{
+    font-size: 0.72rem;
+    padding: 3px 8px;
+    border-radius: 999px;
+    white-space: nowrap;
+    background: var(--teal-soft);
+    color: var(--teal);
+  }
+  .tag--level{
+    background: var(--clay-soft);
+    color: var(--clay);
+  }
+  .tag--lang{
+    background: var(--paper-alt);
+    color: var(--ink-soft);
+  }
+  .card h3{
+    font-family: var(--serif);
+    font-size: 1.18rem;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.3;
+  }
+  .card p{
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+    flex: 1;
+  }
+  .card__meta{
+    display:flex;
+    justify-content: space-between;
+    align-items:center;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    border-top: 1px solid var(--line);
+    padding-top: 10px;
+    margin-top: 4px;
+  }
+  .card__link{
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ink);
+    text-decoration: none;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+  }
+  .card__link:hover{ color: var(--teal); }
+  .card__link svg{ transition: transform .15s ease; }
+  .card__link:hover svg{ transform: translate(2px,-2px); }
+
+  .empty{
+    padding: 60px 0;
+    text-align: center;
+    color: var(--ink-soft);
+    font-family: var(--serif);
+    font-size: 1.2rem;
+  }
+
+  /* ---------- ABOUT ---------- */
+  .about{
+    background: var(--paper-alt);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .about__line{
+    padding: 26px 0;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+  }
+  .about__line a{
+    color: var(--ink);
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+  }
+  .about__line a:hover{ color: var(--teal); }
+
+  footer{
+    padding: 26px 0 40px;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+  }
+  footer a{ color: var(--ink-soft); text-decoration: underline; }
+  footer a:hover{ color: var(--ink); }
+
+  @media (max-width: 720px){
+    .hero__inner{ align-items: flex-start; }
+    .hero__stats{ gap: 22px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    *{ transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="hero">
+    <div class="wrap">
+      <div class="hero__inner">
+        <div class="hero__title-block">
+          <p class="hero__kicker">Irakasle portfolioa</p>
+          <h1>Klaserako baliabideak</h1>
+          <p class="hero__lede">Webgune hau sortu da urteetan zehar irakaskuntza prosezuan bildu ditudan baliabide erabilgarriak biltegiratzeko. Hemen, nik egindako atazak eta baita beste lankide batzuenak eta nire klaseetan erabiltzen ditudanak topatuko dituzue. Etengabeko eraikitze eta berrikuste prozesuan dagoen gunea da.</p>
+        </div>
+        <div class="hero__stats" id="stats">
+          <div class="stat"><span class="stat__num" id="statTotal">0</span><span class="stat__label">baliabide</span></div>
+          <div class="stat"><span class="stat__num" id="statSubjects">0</span><span class="stat__label">gai</span></div>
+          <div class="stat"><span class="stat__num" id="statBlocks">0</span><span class="stat__label">bloke</span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="blocks wrap">
+    <div class="section__head">
+      <h2>Eduki-blokeak</h2>
+    </div>
+    <div class="blockgrid" id="blockGrid"></div>
+  </section>
+
+  <nav class="filters" aria-label="Baliabideak iragazi">
+    <div class="wrap filters__row">
+      <label class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="searchInput" type="text" placeholder="Bilatu izenburuz, gaiaz edo deskribapenaz…" aria-label="Bilatu baliabideak">
+      </label>
+      <div class="filters__group">
+        <div class="pillgroup" id="levelPills" role="group" aria-label="Maila arabera iragazi">
+          <button class="pill" data-level="todos" aria-pressed="true">Guztiak</button>
+          <button class="pill" data-level="fp" aria-pressed="false">LH</button>
+          <button class="pill" data-level="uni" aria-pressed="false">Unibertsitatea</button>
+        </div>
+      </div>
+      <select class="typeselect" id="typeSelect" aria-label="Motaren arabera iragazi">
+        <option value="todos">Edozein mota</option>
+      </select>
+      <div class="filters__group">
+        <span class="filters__group-label">Hizkuntza:</span>
+        <div class="pillgroup" id="langPills" role="group" aria-label="Hizkuntzaren arabera iragazi (bat edo gehiago hauta daitezke)">
+          <button class="pill" data-lang="todos" aria-pressed="true">Guztiak</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="section wrap" id="recursos">
+    <div class="section__head">
+      <h2 id="gridHeading">Baliabide guztiak</h2>
+      <span class="count" id="resultCount"></span>
+    </div>
+    <div class="activefilter" id="activeFilter" hidden>
+      <span id="activeFilterText"></span>
+      <button id="clearBlockFilter" type="button" aria-label="Kendu blokearen iragazkia">✕</button>
+    </div>
+    <div class="grid" id="grid"></div>
+    <p class="empty" id="emptyState" hidden>Ez dago iragazki horrekin bat datorren baliabiderik.</p>
+  </main>
+
+  <section class="about">
+    <div class="wrap">
+      <p class="about__line">Gehiago jakin nahi? Jarri nirekin harremanetan <a href="mailto:sbacigalupe@atxuri.net">sbacigalupe@atxuri.net</a></p>
+    </div>
+  </section>
+
+  <footer class="wrap">
+    <p>Made by Saioa Bacigalupe, helped with AI. This work is licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1" target="_blank" rel="noopener license">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International</a>.</p>
+  </footer>
+
+<script>
+  // ---------------------------------------------------------------
+  // GEHITU ZURE BALIABIDEAK HEMEN. Objektu bakoitza fitxa bat da.
+  // block: behean definitutako "blocks" zerrendako id bat
+  // level:  "fp" | "uni" | "ambos"
+  // lang:   baliabidea zein hizkuntzatan dagoen, ZERRENDA gisa
+  //         (adib. ["eu"] hizkuntza bakarra bada, ["eu","es"] elebiduna bada)
+  // type:   nahi duzun kategoria (iragazkian bakarrik taldekatzen da)
+  // ---------------------------------------------------------------
+  const resources = [
+    {
+      title: "Koedukaziorako gida gelarako",
+      description: "Genero-berdintasuna moduluaren eguneroko jardunean lantzeko jarduerak eta jarraibideak.",
+      url: "https://example.com/koedukazio-gida",
+      level: "ambos",
+      type: "Irakurgaia",
+      subject: "Koedukazioa",
+      block: "hezkidetza",
+      lang: ["eu"]
+    },
+    {
+      title: "Bideo-eztabaida: estereotipoak lanbide teknikoetan",
+      description: "Genero-arrakala ziklo teknikoetan eztabaidatzeko aukera ematen duen dokumental laburra, azpitituluekin.",
+      url: "https://example.com/estereotipo-bideoa",
+      level: "fp",
+      type: "Bideoa",
+      subject: "Koedukazioa",
+      block: "hezkidetza",
+      lang: ["es", "eu"]
+    },
+    {
+      title: "Curriculum eta aurkezpen-gutunaren txantiloia",
+      description: "Bertako lan-merkatura egokitutako eredu editagarria, lehen enplegu bilaketarako pentsatua.",
+      url: "https://example.com/cv-txantiloia",
+      level: "fp",
+      type: "Txantiloia",
+      subject: "Enplegagarritasun-ibilbidea I",
+      block: "ibilbide1",
+      lang: ["eu"]
+    },
+    {
+      title: "Lan-elkarrizketa simulagailua",
+      description: "Galdera arruntak eta aholku praktikoak ikasleekin lehen elkarrizketa prestatzeko.",
+      url: "https://example.com/elkarrizketa-simulagailua",
+      level: "fp",
+      type: "Tresna",
+      subject: "Enplegagarritasun-ibilbidea I",
+      block: "ibilbide1",
+      lang: ["en"]
+    },
+    {
+      title: "Oinarrizko lan-eskubideen gida",
+      description: "Kontratua, nomina eta lanean hasterakoan dituzun funtsezko eskubideen laburpen argia.",
+      url: "https://example.com/lan-eskubideak",
+      level: "fp",
+      type: "Irakurgaia",
+      subject: "Enplegagarritasun-ibilbidea II",
+      block: "ibilbide2",
+      lang: ["eu", "es"]
+    },
+    {
+      title: "Kasu praktikoa: enpresa txiki bat sortzea",
+      description: "Ekimen-modulurako ekintzailetza-ariketa gidatua.",
+      url: "https://example.com/enpresa-kasua",
+      level: "fp",
+      type: "Txantiloia",
+      subject: "Enplegagarritasun-ibilbidea II",
+      block: "ibilbide2",
+      lang: ["es"]
+    },
+    {
+      title: "Tenporizadorea eta talde ausazkoen sorgailua",
+      description: "Denbora banatzeko eta taldeak azkar osatzeko tresna, klase-denbora galdu gabe.",
+      url: "https://example.com/tenporizadorea",
+      level: "ambos",
+      type: "Tresna",
+      subject: "Gelako kudeaketa",
+      block: "eguneroko",
+      lang: ["en", "es"]
+    },
+    {
+      title: "Klasea hasteko dinamiken bankua",
+      description: "Bost minutuko jarduera laburrak, gaia hasi aurretik taldea aktibatzeko.",
+      url: "https://example.com/dinamiken-bankua",
+      level: "ambos",
+      type: "Irakurgaia",
+      subject: "Gelako kudeaketa",
+      block: "eguneroko",
+      lang: ["eu"]
+    }
+  ];
+
+  // Banner bakoitzak konposizio bera partekatzen du (bi orban + puntu lila
+  // komuna + badge zuria) koherentzia estetikoa emateko, eta blokearen
+  // gaiarekin lotutako ikonoa darama koloretan.
+  const blocks = [
+    {
+      id: "hezkidetza",
+      title: "Hezkidetzarako baliabideak",
+      description: "Gelan koedukazioa eta genero-berdintasuna lantzeko materialak, edozein modulutan erabil daitezkeenak.",
+      color: "#0072B2",
+      banner: `<svg viewBox="0 0 300 130" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="34" cy="26" r="42" fill="#E1F0FA"/>
+        <circle cx="266" cy="112" r="50" fill="#0072B2" opacity="0.16"/>
+        <circle cx="256" cy="22" r="9" fill="#CC79A7" opacity="0.55"/>
+        <circle cx="150" cy="65" r="34" fill="#FFFFFF"/>
+        <rect x="132" y="54" width="36" height="7" rx="3.5" fill="#0072B2"/>
+        <rect x="132" y="74" width="36" height="7" rx="3.5" fill="#0072B2"/>
+      </svg>`
+    },
+    {
+      id: "ibilbide1",
+      title: "Enplegagarritasunerako Ibilbidea I",
+      description: "Enplegagarritasun-ibilbidearen lehen moduluko baliabideak: enplegu bilaketa aktiboa eta lehen harremana lan-merkatuarekin.",
+      color: "#E69F00",
+      banner: `<svg viewBox="0 0 300 130" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="34" cy="26" r="42" fill="#FDECC8"/>
+        <circle cx="266" cy="112" r="50" fill="#E69F00" opacity="0.16"/>
+        <circle cx="256" cy="22" r="9" fill="#CC79A7" opacity="0.55"/>
+        <circle cx="150" cy="65" r="34" fill="#FFFFFF"/>
+        <path d="M118 82c10-24 30-24 40-30" stroke="#E69F00" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="1 7"/>
+        <circle cx="118" cy="82" r="4" fill="#E69F00"/>
+        <rect x="160" y="42" width="18" height="14" rx="2" fill="none" stroke="#E69F00" stroke-width="2.2"/>
+        <rect x="166" y="37" width="6" height="6" rx="1" fill="none" stroke="#E69F00" stroke-width="2"/>
+      </svg>`
+    },
+    {
+      id: "ibilbide2",
+      title: "Enplegagarritasunerako Ibilbidea II",
+      description: "Ibilbidearen bigarren moduluko baliabideak: lan-eskubideak, kontratazioa eta ekintzailetza-ideia lehenak.",
+      color: "#009E73",
+      banner: `<svg viewBox="0 0 300 130" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="34" cy="26" r="42" fill="#D7F3EA"/>
+        <circle cx="266" cy="112" r="50" fill="#009E73" opacity="0.16"/>
+        <circle cx="256" cy="22" r="9" fill="#CC79A7" opacity="0.55"/>
+        <circle cx="150" cy="65" r="34" fill="#FFFFFF"/>
+        <path d="M118 82c10-24 30-24 40-30" stroke="#009E73" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="1 7"/>
+        <circle cx="118" cy="82" r="4" fill="#009E73"/>
+        <line x1="164" y1="36" x2="164" y2="58" stroke="#009E73" stroke-width="2.2" stroke-linecap="round"/>
+        <path d="M164 37l16 6-16 6z" fill="#009E73"/>
+      </svg>`
+    },
+    {
+      id: "eguneroko",
+      title: "Eguneroko baliabideak",
+      description: "Eguneroko erabilerarako tresnak eta dinamikak: tenporizadoreak, taldekatzeak eta gelako hasiera bizkorrak.",
+      color: "#D55E00",
+      banner: `<svg viewBox="0 0 300 130" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="34" cy="26" r="42" fill="#FBE3D2"/>
+        <circle cx="266" cy="112" r="50" fill="#D55E00" opacity="0.16"/>
+        <circle cx="256" cy="22" r="9" fill="#CC79A7" opacity="0.55"/>
+        <circle cx="150" cy="65" r="34" fill="#FFFFFF"/>
+        <circle cx="150" cy="65" r="11" fill="none" stroke="#D55E00" stroke-width="2.4"/>
+        <g stroke="#D55E00" stroke-width="2.4" stroke-linecap="round">
+          <line x1="150" y1="42" x2="150" y2="48"/>
+          <line x1="150" y1="82" x2="150" y2="88"/>
+          <line x1="127" y1="65" x2="133" y2="65"/>
+          <line x1="167" y1="65" x2="173" y2="65"/>
+          <line x1="133" y1="48" x2="137" y2="52"/>
+          <line x1="163" y1="78" x2="167" y2="82"/>
+          <line x1="133" y1="82" x2="137" y2="78"/>
+          <line x1="163" y1="52" x2="167" y2="48"/>
+        </g>
+      </svg>`
+    }
+  ];
+
+  const grid = document.getElementById("grid");
+  const emptyState = document.getElementById("emptyState");
+  const resultCount = document.getElementById("resultCount");
+  const searchInput = document.getElementById("searchInput");
+  const levelPills = document.querySelectorAll("#levelPills .pill");
+  const typeSelect = document.getElementById("typeSelect");
+  const langPillsContainer = document.getElementById("langPills");
+
+  const cardColors = {};
+  // Paleta kualitatiboa Okabe–Itoan oinarritua (kolore-itsutasunaren mota ohikoenetarako egokia),
+  // testu/atzeko plano kontraste ona izan dezaten pentsatutako bikoteekin.
+  const palette = [
+    { border: "#0072B2", bg: "#E1F0FA", text: "#01466B" }, // urdina
+    { border: "#E69F00", bg: "#FDECC8", text: "#7A5200" }, // laranja
+    { border: "#009E73", bg: "#D7F3EA", text: "#00543C" }, // berde urdinxka
+    { border: "#D55E00", bg: "#FBE3D2", text: "#7A2E00" }, // gorrimin
+    { border: "#CC79A7", bg: "#F7E1EE", text: "#7A3A5C" }, // more arrosaxka
+    { border: "#56B4E9", bg: "#E3F3FC", text: "#0A4A6B" }  // zeru-urdina
+  ];
+
+  function colorFor(type){
+    if(!cardColors[type]){
+      const idx = Object.keys(cardColors).length % palette.length;
+      cardColors[type] = palette[idx];
+    }
+    return cardColors[type];
+  }
+
+  const levelLabel = { fp: "LH", uni: "Unibertsitatea", ambos: "LH eta unibertsitatea" };
+  const levelPalette = {
+    fp:    { bg: "#FDECC8", text: "#7A5200" },
+    uni:   { bg: "#E1F0FA", text: "#01466B" },
+    ambos: { bg: "#D7F3EA", text: "#00543C" }
+  };
+
+  const langLabel = { eu: "Euskara", es: "Gaztelania", en: "Ingelesa", fr: "Frantsesa" };
+
+  let state = { level: "todos", type: "todos", langs: new Set(), block: "todos", query: "" };
+
+  function populateTypeSelect(){
+    const types = [...new Set(resources.map(r => r.type))].sort();
+    types.forEach(t => {
+      const opt = document.createElement("option");
+      opt.value = t;
+      opt.textContent = t;
+      typeSelect.appendChild(opt);
+    });
+  }
+
+  function populateLangPills(){
+    const langs = [...new Set(resources.flatMap(r => r.lang))].sort();
+    langs.forEach(l => {
+      const btn = document.createElement("button");
+      btn.className = "pill";
+      btn.type = "button";
+      btn.dataset.lang = l;
+      btn.setAttribute("aria-pressed", "false");
+      btn.textContent = langLabel[l] || l.toUpperCase();
+      langPillsContainer.appendChild(btn);
+    });
+  }
+
+  function matches(r){
+    const levelOk = state.level === "todos" || r.level === state.level || r.level === "ambos";
+    const typeOk = state.type === "todos" || r.type === state.type;
+    const langOk = state.langs.size === 0 || r.lang.some(l => state.langs.has(l));
+    const blockOk = state.block === "todos" || r.block === state.block;
+    const q = state.query.trim().toLowerCase();
+    const queryOk = !q || [r.title, r.description, r.subject].join(" ").toLowerCase().includes(q);
+    return levelOk && typeOk && langOk && blockOk && queryOk;
+  }
+
+  function render(){
+    const filtered = resources.filter(matches);
+    grid.innerHTML = "";
+
+    const heading = document.getElementById("gridHeading");
+    const activeFilter = document.getElementById("activeFilter");
+    const activeFilterText = document.getElementById("activeFilterText");
+    if(state.block !== "todos"){
+      const activeBlock = blocks.find(b => b.id === state.block);
+      heading.textContent = activeBlock ? activeBlock.title : "Baliabideak";
+      activeFilterText.textContent = `Blokea: ${activeBlock ? activeBlock.title : ""}`;
+      activeFilter.hidden = false;
+    } else {
+      heading.textContent = "Baliabide guztiak";
+      activeFilter.hidden = true;
+    }
+
+    filtered.forEach(r => {
+      const card = document.createElement("article");
+      card.className = "card";
+      const typeColor = colorFor(r.type);
+      const lvlColor = levelPalette[r.level];
+      card.style.setProperty("--card-color", typeColor.border);
+
+      const langTags = r.lang.map(l => `<span class="tag tag--lang">${langLabel[l] || l.toUpperCase()}</span>`).join("");
+
+      card.innerHTML = `
+        <div class="card__top">
+          <span class="tag" style="background:${typeColor.bg}; color:${typeColor.text}">${r.type}</span>
+          <span class="tag tag--level" style="background:${lvlColor.bg}; color:${lvlColor.text}">${levelLabel[r.level]}</span>
+          ${langTags}
+        </div>
+        <h3>${r.title}</h3>
+        <p>${r.description}</p>
+        <div class="card__meta">
+          <span>${r.subject}</span>
+          <a class="card__link" href="${r.url}" target="_blank" rel="noopener">
+            Ikusi baliabidea
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+          </a>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+
+    emptyState.hidden = filtered.length !== 0;
+    resultCount.textContent = filtered.length === resources.length
+      ? `${resources.length} guztira`
+      : `${filtered.length} / ${resources.length}`;
+  }
+
+  function renderBlocks(){
+    const blockGrid = document.getElementById("blockGrid");
+    blockGrid.innerHTML = "";
+
+    blocks.forEach(b => {
+      const count = resources.filter(r => r.block === b.id).length;
+      const card = document.createElement("article");
+      card.className = "blockcard";
+      card.style.setProperty("--block-color", b.color);
+      card.innerHTML = `
+        <div class="blockcard__banner">${b.banner}</div>
+        <div class="blockcard__body">
+          <h3>${b.title}</h3>
+          <p>${b.description}</p>
+          <span class="blockcard__count">${count} baliabide</span>
+          <button class="blockcard__btn" type="button" data-block="${b.id}">Gehiago irakurri</button>
+        </div>
+      `;
+      blockGrid.appendChild(card);
+    });
+
+    blockGrid.querySelectorAll(".blockcard__btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        state.block = btn.dataset.block;
+        render();
+        document.getElementById("recursos").scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+  }
+
+  levelPills.forEach(btn => {
+    btn.addEventListener("click", () => {
+      levelPills.forEach(b => b.setAttribute("aria-pressed", "false"));
+      btn.setAttribute("aria-pressed", "true");
+      state.level = btn.dataset.level;
+      render();
+    });
+  });
+
+  typeSelect.addEventListener("change", e => {
+    state.type = e.target.value;
+    render();
+  });
+
+  langPillsContainer.addEventListener("click", e => {
+    const btn = e.target.closest(".pill");
+    if(!btn) return;
+    const allBtn = langPillsContainer.querySelector('[data-lang="todos"]');
+
+    if(btn.dataset.lang === "todos"){
+      state.langs.clear();
+      langPillsContainer.querySelectorAll(".pill").forEach(b => {
+        b.setAttribute("aria-pressed", b === allBtn ? "true" : "false");
+      });
+    } else {
+      const isPressed = btn.getAttribute("aria-pressed") === "true";
+      btn.setAttribute("aria-pressed", isPressed ? "false" : "true");
+      if(isPressed){ state.langs.delete(btn.dataset.lang); }
+      else { state.langs.add(btn.dataset.lang); }
+      allBtn.setAttribute("aria-pressed", state.langs.size === 0 ? "true" : "false");
+    }
+    render();
+  });
+
+  searchInput.addEventListener("input", e => {
+    state.query = e.target.value;
+    render();
+  });
+
+  document.getElementById("clearBlockFilter").addEventListener("click", () => {
+    state.block = "todos";
+    render();
+  });
+
+  function updateStats(){
+    document.getElementById("statTotal").textContent = resources.length;
+    document.getElementById("statSubjects").textContent = new Set(resources.map(r => r.subject)).size;
+    document.getElementById("statBlocks").textContent = blocks.length;
+  }
+
+  populateTypeSelect();
+  populateLangPills();
+  updateStats();
+  renderBlocks();
+  render();
+</script>
+</body>
+</html>
